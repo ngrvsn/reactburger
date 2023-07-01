@@ -8,7 +8,7 @@ import PropTypes from 'prop-types';
 import styles from './BurgerIngredients.module.css';
 
 const BurgerIngredients = memo(({ ingredients }) => {
-  const [current, setCurrent] = useState('Булки');
+  const [current, setCurrent] = useState('bunRef');
   const [open, setOpen] = useState(false);
   const [item, setItem] = useState({});
 
@@ -25,19 +25,16 @@ const BurgerIngredients = memo(({ ingredients }) => {
     setOpen(false);
   };
 
-  const activeTab = (tab) => {
-    setCurrent(tab);
-
-    if (tab === 'Булки') {
-      bunRef.current.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-    } else if (tab === 'Соусы') {
-      sauceRef.current.scrollIntoView({ behavior: 'smooth', inline: 'start' });
-    } else if (tab === 'Начинки') {
-      mainRef.current.scrollIntoView({ behavior: 'smooth', inline: 'start' });
+  const setActiveTab = (ref) => {
+    if (ref === bunRef.current) {
+      setCurrent('bunRef');
+    } else if (ref === sauceRef.current) {
+      setCurrent('sauceRef');
+    } else if (ref === mainRef.current) {
+      setCurrent('mainRef');
     }
   };
 
-  const tabLabels = ['Булки', 'Соусы', 'Начинки'];
 
   const bunIngredients = ingredients.filter((item) => item.type === 'bun');
   const sauceIngredients = ingredients.filter((item) => item.type === 'sauce');
@@ -53,19 +50,18 @@ const BurgerIngredients = memo(({ ingredients }) => {
     <div>
       <section>
         <div className={styles.header}>
-          {tabLabels.map((item) => (
-            <Tab
-              key={item}
-              value={item}
-              active={current === item}
-              onClick={activeTab}
-            >
-              {item}
-            </Tab>
-          ))}
+          <Tab value={bunRef.current} active={current === 'bunRef'} onClick={setActiveTab}>
+            Булки
+          </Tab>
+          <Tab value={sauceRef.current} active={current === 'sauceRef'} onClick={setActiveTab}>
+            Соусы
+          </Tab>
+          <Tab value={mainRef.current} active={current === 'mainRef'} onClick={setActiveTab}>
+            Начинки
+          </Tab>
         </div>
         <div className={styles.body}>
-          <div className='custom-scroll'>
+          <div className="custom-scroll">
             {tabsIngredientsArr.map((item) => (
               <div className={styles.grid} key={item.title}>
                 <h2
@@ -107,7 +103,15 @@ const BurgerIngredients = memo(({ ingredients }) => {
 });
 
 BurgerIngredients.propTypes = {
-  ingredients: PropTypes.arrayOf(PropTypes.object).isRequired,
+  ingredients: PropTypes.arrayOf(
+    PropTypes.shape({
+      _id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      type: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default BurgerIngredients;

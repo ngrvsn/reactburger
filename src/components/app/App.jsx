@@ -46,13 +46,14 @@ const App = () => {
   return (
     <div className={styles.app}>
       <AppHeader className={styles.header} />
-      <div className={styles.main}>
-        <p className={styles.paragraph}>Соберите бургер</p>
+      <p className={styles.paragraph}>Соберите бургер</p>
+      <main className={styles.main}>
         <BurgerIngredients ingredients={data} />
         <BurgerConstructor bun={bun} listElements={newData} />
-      </div>
+      </main>
     </div>
   );
+  
 };
 
 export default App;
