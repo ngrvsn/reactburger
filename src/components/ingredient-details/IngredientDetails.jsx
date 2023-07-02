@@ -7,6 +7,9 @@ import styles from './IngredientDetails.module.css';
 function IngredientDetails({ item }) {
   return (
     <div>
+      <div className={styles.header}>
+        <h2 className={styles.details}>Детали ингредиента</h2>
+      </div>
       <img
         className={styles.image}
         src={item.image_large}
